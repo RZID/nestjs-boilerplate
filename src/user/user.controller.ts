@@ -10,9 +10,9 @@ import UserService from './user.service';
 export default class UserController {
   constructor(private userService: UserService) {}
 
-  // eslint-disable-next-line class-methods-use-this
   @Get('me')
   getMe(@GetUser() user: User) {
+    console.log('test');
     return user;
   }
 
