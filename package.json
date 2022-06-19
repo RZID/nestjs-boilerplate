@@ -109,7 +109,6 @@
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint --fix",
-      "npm run test:e2e",
       "git add"
     ],
     "*.{html,css,less,ejs}": [
