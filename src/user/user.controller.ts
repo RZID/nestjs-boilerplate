@@ -7,12 +7,12 @@ import UserService from './user.service';
 
 @UseGuards(JwtGuard)
 @Controller('users')
-export class UserController {
+export default class UserController {
   constructor(private userService: UserService) {}
 
+  // eslint-disable-next-line class-methods-use-this
   @Get('me')
   getMe(@GetUser() user: User) {
-    console.log('test');
     return user;
   }
 
