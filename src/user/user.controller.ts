@@ -7,7 +7,7 @@ import UserService from './user.service';
 
 @UseGuards(JwtGuard)
 @Controller('users')
-export default class UserController {
+export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('me')
