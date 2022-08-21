@@ -6,20 +6,27 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model User {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   email String @unique
-  hash String
+  password String
 
   firstName String?
   lastName String?
+  role Role @default(USER)
   
   bookmarks Bookmark[]
 
@@ -30,6 +37,7 @@ model Bookmark {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   title String
   description String?

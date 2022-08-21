@@ -6,37 +6,39 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prisma:dev:deploy": "prisma migrate deploy",
+    "prisma:dev:migrate": "dotenv -e config/.env.dev -- prisma migrate dev",
+    "prisma:dev:deploy": "dotenv -e config/.env.dev -- prisma migrate deploy",
     "db:dev:rm": "docker compose rm dev-db -s -f -v",
     "db:dev:up": "docker compose up dev-db -d",
-    "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up && sleep 1 && yarn prisma:dev:deploy",
-    "prisma:test:deploy": "dotenv -e .env.test -- prisma migrate deploy",
+    "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up && sleep 30 && yarn prisma:dev:deploy",
+    "prisma:test:deploy": "dotenv -e config/.env.test -- prisma migrate deploy",
     "db:test:rm": "docker compose rm test-db -s -f -v",
     "db:test:up": "docker compose up test-db -d",
-    "db:test:restart": "yarn db:test:rm && yarn db:test:up && sleep 1 && yarn prisma:test:deploy",
+    "db:test:restart": "yarn db:test:rm && yarn db:test:up && sleep 30 && yarn prisma:test:deploy",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**\" \"test/**\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,app,test}/**/*.{js,ts,jsx,tsx}\" --max-warnings=0",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "pretest:e2e": "yarn db:test:restart && sleep 1",
-    "test:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json",
+    "test:e2e": "dotenv -e config/.env.test -- jest --watch --no-cache --config ./test/jest-e2e.json",
     "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
-    "@nestjs/config": "^2.1.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/passport": "^8.2.2",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/swagger": "^6.0.5",
     "@prisma/client": "^3.15.2",
     "argon2": "^0.28.5",
     "class-transformer": "^0.5.1",
@@ -69,6 +71,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^8.0.0",
     "jest": "28.0.3",
     "lint-staged": "^13.0.2",
     "pactum": "^3.1.10",
@@ -80,8 +83,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.0.0",
-    "typescript": "^4.3.5",
-    "husky": "^8.0.0"
+    "typescript": "^4.3.5"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -106,12 +108,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "{src,app,test}/**/*.{js,ts,jsx,tsx}": [
       "prettier --write",
-      "eslint --fix",
+      "eslint --max-warnings=0",
       "git add"
     ],
-    "*.{html,css,less,ejs}": [
+    "{src,app,test}/**/*.{html,css,less,ejs}": [
       "prettier --write",
       "git add"
     ]

@@ -7,7 +7,7 @@ export default class UserService {
   constructor(private prisma: PrismaService) {}
 
   async editUser(userId: number, dto: EditUserDto) {
-    const user = this.prisma.user.update({
+    const user = await this.prisma.user.update({
       where: {
         id: userId,
       },
@@ -15,7 +15,22 @@ export default class UserService {
         ...dto,
       },
     });
-    delete user.hash;
+    delete user.password;
     return user;
+  }
+
+  async allUser() {
+    const users = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+      },
+    });
+    return users;
   }
 }

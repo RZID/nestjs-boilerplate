@@ -5,6 +5,7 @@ import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import PrismaService from '../prisma/prisma.service';
 import { AuthDto } from './dto';
+import { AuthResponse } from './api-response/auth.entity';
 
 @Injectable()
 export default class AuthService {
@@ -20,11 +21,11 @@ export default class AuthService {
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
-          hash,
+          password: hash,
         },
       });
 
-      return await this.signToken(user.id, user.email);
+      return await this.signToken(user.id, user.email, user.role);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -45,26 +46,28 @@ export default class AuthService {
       throw new ForbiddenException('Credential incorrect');
     }
 
-    const pwMatches = await argon.verify(user.hash, dto.password);
+    const pwMatches = await argon.verify(user.password, dto.password);
     if (!pwMatches) {
       throw new ForbiddenException('Credential incorrect');
     }
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email, user.role);
   }
 
   async signToken(
     userId: number,
     email: string,
-  ): Promise<{ access_token: string }> {
+    role: string,
+  ): Promise<AuthResponse> {
     const payload = {
       sub: userId,
       email,
+      role,
     };
     const secret = this.config.get('JWT_SECRET');
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '15m',
+      expiresIn: '60m',
       secret,
     });
     return { access_token: token };

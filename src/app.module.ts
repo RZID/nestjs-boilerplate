@@ -5,9 +5,12 @@ import UserModule from './user/user.module';
 import BookmarkModule from './bookmark/bookmark.module';
 import PrismaModule from './prisma/prisma.module';
 
+const APP_ENV = process.env.APP_ENV || 'dev';
+const envFilePath = `config/.env.${APP_ENV}`;
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     AuthModule,
     UserModule,
     BookmarkModule,
