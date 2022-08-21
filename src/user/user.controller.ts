@@ -33,7 +33,7 @@ export default class UserController {
   editUser(
     @GetUser('id') userId: number,
     @Body() dto: EditUserDto,
-  ): Promise<EditUserDto> {
+  ): Promise<UserResponse> {
     return this.userService.editUser(userId, dto);
   }
 

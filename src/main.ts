@@ -8,12 +8,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   if (process.env.APP_ENV !== 'production') {
-    const config = new DocumentBuilder()
+    const doc = new DocumentBuilder()
       .setTitle('NestJS API')
       .setDescription('API documentation')
       .addBearerAuth()
       .build();
-    const document = SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, doc);
     SwaggerModule.setup('swagger', app, document, {
       swaggerOptions: {
         persistAuthorization: true,

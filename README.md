@@ -21,6 +21,9 @@ npx prisma generate
 # Start dev
 
 yarn start:dev
+
+Swagger UI [http://localhost:3333/swagger](http://localhost:3333/swagger)
+
 <br/>
 
 # End to end test
