@@ -7,9 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  if (process.env.APP_ENV !== 'production') {
+  if (process.env.APP_ENV !== 'prd') {
     const doc = new DocumentBuilder()
-      .setTitle('NestJS API')
+      .setTitle(`NestJS API - ${process.env.APP_ENV}`)
       .setDescription('API documentation')
       .addBearerAuth()
       .build();

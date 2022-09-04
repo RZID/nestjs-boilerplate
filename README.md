@@ -1,16 +1,22 @@
-# Start database from docker
+# 1. install
+
+yarn install
+
+<br/>
+
+# 2. Start dev database from docker
 
 yarn db:dev:up
 
 <br/>
 
-# initial prisma database setup
+# 3. initial prisma database setup
 
 yarn prisma:dev:deploy
 
 <br/>
 
-### Every changes in schema.prisma need to create migration
+### \* Every changes in schema.prisma need to create migration
 
 yarn prisma:dev:migrate
 
@@ -18,7 +24,7 @@ npx prisma generate
 
 <br/>
 
-# Start dev
+# 4. Start dev
 
 yarn start:dev
 
@@ -26,9 +32,22 @@ Swagger UI [http://localhost:3333/swagger](http://localhost:3333/swagger)
 
 <br/>
 
+# build and run with Docker
+
+docker-compose up dev
+<br/>
+docker-compose up prd
+<br/>
+// rebuild docker image
+<br/>
+docker-compose up --build prd
+
+<br/>
+
 # End to end test
 
 yarn test:e2e
+
 <br/>
 
 # NestJS cli

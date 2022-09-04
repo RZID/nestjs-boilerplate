@@ -1,5 +1,44 @@
 version: '3.8'
 services:
+  dev:
+    container_name: nestjs-docker-dev
+    image: nestjs-docker-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    command: npm run start:debug
+    ports:
+      - 3333:3333
+      - 9229:9229
+    networks:
+      - nestjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  prd:
+    container_name: nestjs-docker-prd
+    image: nestjs-docker-prd:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    command: npm run start:prod
+    ports:
+      - 3333:3333
+      - 9229:9229
+    networks:
+      - nestjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
   dev-db:
     image: mysql:8.0
     ports:
@@ -7,8 +46,10 @@ services:
     environment:
       - MYSQL_DATABASE=nest
       - MYSQL_ROOT_PASSWORD=Nest123
+    volumes:
+      - nestjs-db-dev:/var/lib/mysql
     networks:
-      - freecodecamp
+      - nestjs-network
   test-db:
     image: mysql:8.0
     ports:
@@ -16,7 +57,14 @@ services:
     environment:
       - MYSQL_DATABASE=nest
       - MYSQL_ROOT_PASSWORD=Nest123
+    volumes:
+      - nestjs-db-test:/var/lib/mysql
     networks:
-      - freecodecamp
+      - nestjs-network
+
 networks:
-  freecodecamp:
+  nestjs-network:
+
+volumes:
+  nestjs-db-dev:
+  nestjs-db-test:

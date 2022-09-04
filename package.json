@@ -1,8 +1,6 @@
 {
-  "name": "nestjs-api-tutorial",
+  "name": "nestjs-boilerplate",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,7 +19,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "APP_ENV=prd node dist/src/main",
     "lint": "eslint \"{src,app,test}/**/*.{js,ts,jsx,tsx}\" --max-warnings=0",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -38,7 +36,7 @@
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/passport": "^8.2.2",
     "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/swagger": "^6.0.5",
+    "@nestjs/swagger": "^6.1.1",
     "@prisma/client": "^3.15.2",
     "argon2": "^0.28.5",
     "class-transformer": "^0.5.1",
