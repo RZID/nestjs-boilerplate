@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   dev:
-    container_name: nestjs-docker-dev
-    image: nestjs-docker-dev:1.0.0
+    container_name: nestjs-boilerplate-dev
+    image: nestjs-boilerplate-dev:1.0.0
     build:
       context: .
       target: development
@@ -20,8 +20,8 @@ services:
       - /usr/src/app/node_modules
     restart: unless-stopped
   prd:
-    container_name: nestjs-docker-prd
-    image: nestjs-docker-prd:1.0.0
+    container_name: nestjs-boilerplate-prd
+    image: nestjs-boilerplate-prd:1.0.0
     build:
       context: .
       target: production
