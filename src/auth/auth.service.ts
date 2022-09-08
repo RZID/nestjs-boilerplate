@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as argon from 'argon2';
@@ -29,7 +29,7 @@ export default class AuthService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken');
+          throw new BadRequestException('Credentials taken');
         }
       }
       throw error;
@@ -43,12 +43,12 @@ export default class AuthService {
       },
     });
     if (!user) {
-      throw new ForbiddenException('Credential incorrect');
+      throw new BadRequestException('Credential incorrect');
     }
 
     const pwMatches = await argon.verify(user.password, dto.password);
     if (!pwMatches) {
-      throw new ForbiddenException('Credential incorrect');
+      throw new BadRequestException('Credential incorrect');
     }
 
     return this.signToken(user.id, user.email, user.role);

@@ -10,28 +10,41 @@ import PrismaModule from './prisma/prisma.module';
 const APP_ENV = process.env.APP_ENV || 'dev';
 const envFilePath = `config/.env.${APP_ENV}`;
 
-@Module({
-  imports: [
-    ConfigModule.forRoot({ envFilePath, isGlobal: true }),
+const imports = [
+  ConfigModule.forRoot({ envFilePath, isGlobal: true }),
+  AuthModule,
+  UserModule,
+  BookmarkModule,
+  PrismaModule,
+];
+const providers = [];
 
+// implement sentry.io except env is dev
+if (process.env.APP_ENV !== 'dev') {
+  imports.push(
     SentryModule.forRoot({
       dsn: process.env.SENTRY_DSN,
       debug: true,
       environment: process.env.APP_ENV,
       logLevels: ['debug'],
     }),
+  );
+  providers.push({
+    provide: APP_INTERCEPTOR,
+    useValue: new SentryInterceptor(),
+  });
+}
+// {
+//   filters: [
+//     {
+//       type: HttpException,
+//       filter: (e) => [400].includes(e.statusCode) === false, // skip status code = 400
+//     },
+//   ],
+// }
 
-    AuthModule,
-    UserModule,
-    BookmarkModule,
-    PrismaModule,
-  ],
-
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useValue: new SentryInterceptor(),
-    },
-  ],
+@Module({
+  imports,
+  providers,
 })
 export default class AppModule {}

@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import PrismaService from '../prisma/prisma.service';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
 
@@ -44,7 +44,7 @@ export default class BookmarkService {
       where: { id: bookmarkId },
     });
     if (!bookmark || bookmark.userId !== userId) {
-      throw new ForbiddenException('Access to resources denied');
+      throw new BadRequestException('Access to resources denied');
     }
 
     return this.prisma.bookmark.update({
@@ -58,7 +58,7 @@ export default class BookmarkService {
       where: { id: bookmarkId },
     });
     if (!bookmark || bookmark.userId !== userId) {
-      throw new ForbiddenException('Access to resources denied');
+      throw new BadRequestException('Access to resources denied');
     }
 
     return this.prisma.bookmark.delete({ where: { id: bookmarkId } });
