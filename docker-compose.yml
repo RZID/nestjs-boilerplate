@@ -9,7 +9,28 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
     command: npm run start:debug
+    ports:
+      - 3333:3333
+      - 9229:9229
+    networks:
+      - nestjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  uat:
+    container_name: nestjs-boilerplate-uat
+    image: nestjs-boilerplate-uat:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+    command: npm run start:uat
     ports:
       - 3333:3333
       - 9229:9229
@@ -28,6 +49,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
     command: npm run start:prod
     ports:
       - 3333:3333

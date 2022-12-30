@@ -1,26 +1,40 @@
-FROM node:18-alpine AS development
+###################
+# BUILD FOR LOCAL DEVELOPMENT
+###################
+
+FROM node:18.12-alpine3.16 AS development
 
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 RUN yarn install
-COPY . .
+COPY --chown=node:node . .
 RUN npx prisma generate
-RUN yarn build
+USER node
 
 
-FROM node:18-alpine as production
+###################
+# BUILD FOR PRODUCTION MINIMIZED
+###################
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+FROM node:18.12-alpine3.16 AS build
+
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 RUN yarn install
-# COPY . .
-# RUN npx prisma generate
-COPY --from=development /usr/src/app/dist ./dist
-COPY --from=development /usr/src/app/prisma ./prisma
-RUN yarn add prisma -g
+COPY --chown=node:node . .
 RUN npx prisma generate
-# COPY --from=development /usr/src/app/node_modules/.prisma ./node_modules/
-# COPY --from=development /usr/src/app/node_modules/@prisma ./node_modules/
-# CMD ["node", "dist/src/main"]
+RUN npm run build
+ENV NODE_ENV production
+RUN yarn install --frozen-lockfile --production && npm cache clean --force
+USER node
+
+
+###################
+# PRODUCTION MINIMIZED
+###################
+
+FROM node:18.12-alpine3.16 AS production
+
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist

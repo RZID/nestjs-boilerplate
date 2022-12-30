@@ -42,11 +42,20 @@ yarn start:dev
 docker-compose up dev
 <br/>
 docker-compose up prd
-<br/>
 
 > rebuild docker image
 
 docker-compose up --build prd
+
+> export docker image
+
+docker-compose build prd
+<br/>
+docker save -o ./nestjs-boilerplate-prd.tat nestjs-boilerplate-prd
+
+> load docker image
+
+docker load -i nestjs-boilerplate-prd.tat
 
 <br/>
 
