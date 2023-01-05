@@ -9,7 +9,6 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
-      DATABASE_URL: ${DATABASE_URL}
     command: npm run start:debug
     ports:
       - 3333:3333
