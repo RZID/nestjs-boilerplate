@@ -29,7 +29,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
+      # DATABASE_URL: ${DATABASE_URL}
     command: npm run start:uat
     ports:
       - 3333:3333

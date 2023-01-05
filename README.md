@@ -41,11 +41,15 @@ yarn start:dev
 
 docker-compose up dev
 <br/>
-docker-compose up prd
+docker-compose up uat
 
 > rebuild docker image
 
-docker-compose up --build prd
+docker-compose up --build uat
+
+> inject env variable
+
+DATABASE_URL='mysql://root:Nest123@172.17.0.1:3306/nest?schema=public' docker-compose up --build prd
 
 > export docker image
 
