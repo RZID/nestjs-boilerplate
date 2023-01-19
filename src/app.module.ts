@@ -7,7 +7,7 @@ import UserModule from './user/user.module';
 import BookmarkModule from './bookmark/bookmark.module';
 import PrismaModule from './prisma/prisma.module';
 
-const APP_ENV = process.env.APP_ENV || 'dev';
+const APP_ENV = process.env.APP_ENV || 'local';
 const envFilePath = `config/.env.${APP_ENV}`;
 
 const imports = [
@@ -19,8 +19,8 @@ const imports = [
 ];
 const providers = [];
 
-// implement sentry.io except env is dev
-if (process.env.APP_ENV !== 'dev') {
+// implement sentry.io except env is local
+if (process.env.APP_ENV !== 'local') {
   imports.push(
     SentryModule.forRoot({
       dsn: process.env.SENTRY_DSN,

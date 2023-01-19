@@ -10,27 +10,27 @@ yarn install
 
 ## 2. Start dev database from docker
 
-yarn db:dev:up
+yarn db:local:up
 
 <br/>
 
 ## 3. initial prisma database setup
 
-yarn prisma:dev:deploy
+yarn prisma:local:deploy
 
 <br/>
 
 > Every changes in schema.prisma need to create migration
 
-yarn prisma:dev:migrate
+yarn prisma:local:migrate
 
 npx prisma generate
 
 <br/>
 
-## 4. Start dev
+## 4. Start local
 
-yarn start:dev
+yarn start:local
 
 > Swagger UI [http://localhost:3333/swagger](http://localhost:3333/swagger)
 
@@ -39,13 +39,13 @@ yarn start:dev
 
 ## Build and run with Docker
 
-docker-compose up dev
+PORT=3330 docker-compose up dev
 <br/>
-docker-compose up uat
+PORT=3330 docker-compose up uat
 
 > rebuild docker image
 
-docker-compose up --build uat
+PORT=3330 docker-compose up --build uat
 
 > inject env variable
 
